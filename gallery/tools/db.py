@@ -77,7 +77,7 @@ def edit_user():
 def delete_user():
     user_to_delete = input("\nEnter username to delete>")
     answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
-    if answer is "Yes" or "yes" or "y" or "Y":
+    if answer is "Yes" or "Y":
         try:
             execute("DELETE FROM users WHERE username='" + user_to_delete + "';")
             connection.commit()
@@ -85,12 +85,17 @@ def delete_user():
             print("Error deleting username\n")
 
 
+def select_all(table):
+    res = execute('select * from ' + table)
+    return res
+
+
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
     choice = int(choice)
     if choice == 1:
-        print("You entered 1\n")
-        res = execute('select * from users')
+        print("\nList Users\n")
+        res = select_all("users")
         print("username  password  full name\n-------------------------------")
         for row in res:
             print(row)
@@ -98,19 +103,19 @@ def menu():
         menu()
 
     elif choice == 2:
-        print("You entered 2")
+        print("\nAdd User\n")
         add_user()
         menu()
     elif choice == 3:
-        print("You entered 3")
+        print("\nEdit User\n")
         edit_user()
         menu()
     elif choice == 4:
-        print("You entered 4")
+        print("\nDelete User\n")
         delete_user()
         menu()
     elif choice == 5:
-        print("Goodbye\n")
+        print("\nGoodbye!\n")
 
 
 def main():
