@@ -39,7 +39,7 @@ def menu():
         res = execute('select * from users')
         print("username  password  full name\n-------------------------------")
         for row in res:
-            print(row)
+            print(row.strip('(),'))
         print("\n")
         menu()
 
