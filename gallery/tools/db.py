@@ -51,9 +51,23 @@ def edit_user():
     cursor.execute("select * from users where username='" + user_to_edit + "';")
     res = cursor.fetchall()
     if not res:
-        print("No such user exists")
+        print("No such user exists\n")
     else:
-        print(res)
+        password = input("New password (press enter to keep current)>")
+        full_name = input("New full name (press enter to keep current)>")
+
+        try:
+            if password:
+                execute("UPDATE users SET password='" + password + "' WHERE username='" + user_to_edit + "';")
+
+        except Exception as error:
+                print("Error updating password\n")
+        try:
+            if full_name:
+                execute("UPDATE users SET full_name='" + full_name + "' WHERE username='" + user_to_edit + "';")
+
+        except Exception as error:
+                print("Error updating full name\n")
 
 
 def menu():
