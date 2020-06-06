@@ -50,7 +50,7 @@ def edit_user():
     user_to_edit = input("Username to edit>")
     cursor.execute("select * from users where username='" + user_to_edit + "';")
     res = cursor.fetchall()
-    if res.equals("[]"):
+    if not res:
         print("No such user exists")
     else:
         print(res)
