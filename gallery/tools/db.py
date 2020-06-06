@@ -21,10 +21,13 @@ def connect():
     connection = psycopg2.connect(host=db_host, dbname=db_name, user=db_user, password=get_password())
 
 
-def execute(query):
+def execute(query, args=None):
     global connection
     cursor = connection.cursor()
-    cursor.execute(query)
+    if not args:
+        cursor.execute(query)
+    else:
+        cursor.execute(query, args)
     return cursor
 
 
@@ -33,7 +36,7 @@ def main():
     res = execute('select * from users')
     for row in res:
         print(row)
-    res = execute("update users set password='freddyBoy' where username='fred'")
+    res = execute("update users set password=%s where username='fred'", ('banana',))
     res = execute('select * from users')
     for row in res:
         print(row)
