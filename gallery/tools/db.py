@@ -41,7 +41,7 @@ def add_user():
         execute("""
         INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
         """, (username, password, full_name))
-        cursor.commit()
+        connection.commit()
 
     except Exception as error:
         print("Error: a user with username '" + username + "' already exists\n")
@@ -61,14 +61,14 @@ def edit_user():
         try:
             if password:
                 execute("UPDATE users SET password='" + password + "' WHERE username='" + user_to_edit + "';")
-                cursor.commit()
+                connection.commit()
 
         except Exception as error:
                 print("Error updating password\n")
         try:
             if full_name:
                 execute("UPDATE users SET full_name='" + full_name + "' WHERE username='" + user_to_edit + "';")
-                cursor.commit()
+                connection.commit()
 
         except Exception as error:
                 print("Error updating full name\n")
