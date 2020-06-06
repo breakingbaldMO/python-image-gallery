@@ -35,9 +35,15 @@ def add_user():
     username = input("Username>")
     password = input("Password>")
     full_name = input("Full name>")
-    execute("""
-    INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
-    """, (username, password, full_name))
+
+    check = execute("select 1 from users where username == %s", username)
+    if check is None:
+        print("User with username " + username + " already exists")
+
+    else:
+        execute("""
+        INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
+        """, (username, password, full_name))
 
 
 def menu():
