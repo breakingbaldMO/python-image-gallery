@@ -33,10 +33,11 @@ def main():
     res = execute('select * from users')
     for row in res:
         print(row)
-    res = execute("update users set password='blah' where username='fred'")
+    res = execute("update users set password='freddyBoy' where username='fred'")
     res = execute('select * from users')
     for row in res:
         print(row)
+
 
 if __name__ == '__main__':
     main()
