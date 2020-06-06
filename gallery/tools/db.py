@@ -31,6 +31,15 @@ def execute(query, args=None):
     return cursor
 
 
+def add_user():
+    username = input("Username>")
+    password = input("Password>")
+    full_name = input("Full name>")
+    execute("""
+    INSERT into users (username, password, full_name) VALUES (%s, %s, %s,);
+    """, (username, password, full_name))
+
+
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
     choice = int(choice)
@@ -45,6 +54,7 @@ def menu():
 
     elif choice == 2:
         print("You entered 2")
+        add_user()
         menu()
     elif choice == 3:
         print("You entered 3")
