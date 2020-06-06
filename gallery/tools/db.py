@@ -42,7 +42,17 @@ def add_user():
         """, (username, password, full_name))
 
     except Exception as error:
-        print("Error: a user with username '" + username + "' already exists")
+        print("Error: a user with username '" + username + "' already exists\n")
+
+
+def edit_user():
+    user_to_edit = input("Username to edit>")
+    res = execute("select * from users where username='" + user_to_edit + "';")
+    if res is None:
+        print("No such user exists")
+    else:
+        print(user_to_edit)
+
 
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
@@ -62,6 +72,7 @@ def menu():
         menu()
     elif choice == 3:
         print("You entered 3")
+        edit_user()
         menu()
     elif choice == 4:
         print("You entered 4")
