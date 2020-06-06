@@ -94,7 +94,7 @@ def menu():
         password = input("Password>")
         full_name = input("Full name>")
         if not username:
-            print("username must be specified")
+            print("username must be specified\n")
             menu()
         else:
             add_user(username, password, full_name)
