@@ -93,8 +93,12 @@ def menu():
         username = input("Username>")
         password = input("Password>")
         full_name = input("Full name>")
-        add_user(username, password, full_name)
-        menu()
+        if not username:
+            print("username must be specified")
+            menu()
+        else:
+            add_user(username, password, full_name)
+            menu()
 
     elif choice == 3:
         print("\nEdit User\n")
@@ -104,18 +108,27 @@ def menu():
         res = cursor.fetchall()
         if not res:
             print("\nNo such user exists\n")
-        password = input("New password (press enter to keep current)>")
-        full_name = input("New full name (press enter to keep current)>")
-        edit_user(user_to_edit, password, full_name)
-        menu()
+            menu()
+        else:
+            password = input("New password (press enter to keep current)>")
+            full_name = input("New full name (press enter to keep current)>")
+            edit_user(user_to_edit, password, full_name)
+            menu()
 
     elif choice == 4:
         print("\nDelete User\n")
         user_to_delete = input("\nEnter username to delete>")
-        answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
-        if answer is "Yes" or "Y":
-            delete_user(user_to_delete)
-        menu()
+        cursor = connection.cursor()
+        cursor.execute("select * from users where username='" + user_to_delete + "';")
+        res = cursor.fetchall()
+        if not res:
+            print("\nNo such user exists\n")
+            menu()
+        else:
+            answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
+            if answer is "Yes" or "Y":
+                delete_user(user_to_delete)
+                menu()
 
     elif choice == 5:
         print("\nGoodbye!\n")
