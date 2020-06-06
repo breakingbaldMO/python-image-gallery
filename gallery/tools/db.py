@@ -33,6 +33,7 @@ def execute(query, args=None):
 
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
+    choice = int(choice)
     if choice == 1:
         print("You entered 1")
         menu()
@@ -51,10 +52,7 @@ def menu():
 
 def main():
     connect()
-
-
-
-
+    menu()
 
     # res = execute('select * from users')
     # for row in res:
