@@ -46,8 +46,11 @@ def add_user():
 
 
 def edit_user():
+    connection.cursor()
     user_to_edit = input("Username to edit>")
-    res = execute("select * from users where username='" + user_to_edit + "';")
+    execute("select * from users where username='" + user_to_edit + "';")
+    cursor = connection.cursor()
+    res = cursor.fetchall()
     if res is None:
         print("No such user exists")
     else:
