@@ -39,7 +39,7 @@ def menu():
         res = execute('select * from users')
         for row in res:
             print(row)
-            print("\n\n")
+        print("\n\n")
         menu()
     elif choice == 2:
         print("You entered 2")
