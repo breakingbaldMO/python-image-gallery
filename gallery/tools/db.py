@@ -31,10 +31,30 @@ def execute(query, args=None):
     return cursor
 
 
+def menu():
+    choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
+    if choice == 1:
+        print("You entered 1")
+        menu()
+    elif choice == 2:
+        print("You entered 2")
+        menu()
+    elif choice == 3:
+        print("You entered 3")
+        menu()
+    elif choice == 4:
+        print("You entered 4")
+        menu()
+    elif choice == 5:
+        print("You entered 5")
+
+
 def main():
     connect()
 
-    print("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
+
+
+
 
     # res = execute('select * from users')
     # for row in res:
