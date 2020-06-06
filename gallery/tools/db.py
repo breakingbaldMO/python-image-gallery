@@ -31,12 +31,8 @@ def execute(query, args=None):
     return cursor
 
 
-def add_user():
+def add_user(username, password, full_name):
     cursor = connection.cursor()
-    username = input("Username>")
-    password = input("Password>")
-    full_name = input("Full name>")
-
     try:
         execute("""
         INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
@@ -47,41 +43,28 @@ def add_user():
         print("Error: a user with username '" + username + "' already exists\n")
 
 
-def edit_user():
-    cursor = connection.cursor()
-    user_to_edit = input("\nUsername to edit>")
-    cursor.execute("select * from users where username='" + user_to_edit + "';")
-    res = cursor.fetchall()
-    if not res:
-        print("\nNo such user exists\n")
-    else:
-        password = input("New password (press enter to keep current)>")
-        full_name = input("New full name (press enter to keep current)>")
-
-        try:
-            if password:
+def edit_user(user_to_edit, password, full_name):
+    try:
+        if password:
                 execute("UPDATE users SET password='" + password + "' WHERE username='" + user_to_edit + "';")
                 connection.commit()
 
-        except Exception as error:
+    except Exception as error:
                 print("Error updating password\n")
-        try:
-            if full_name:
+    try:
+        if full_name:
                 execute("UPDATE users SET full_name='" + full_name + "' WHERE username='" + user_to_edit + "';")
                 connection.commit()
 
-        except Exception as error:
+    except Exception as error:
                 print("Error updating full name\n")
 
 
-def delete_user():
-    user_to_delete = input("\nEnter username to delete>")
-    answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
-    if answer is "Yes" or "Y":
-        try:
-            execute("DELETE FROM users WHERE username='" + user_to_delete + "';")
-            connection.commit()
-        except Exception as error:
+def delete_user(user_to_delete):
+    try:
+        execute("DELETE FROM users WHERE username='" + user_to_delete + "';")
+        connection.commit()
+    except Exception as error:
             print("Error deleting username\n")
 
 
@@ -96,28 +79,44 @@ def menu():
     if choice == 1:
         print("\nList Users\n")
         res = select_all("users")
-        print("username     password     full name\n-------------------------------")
+        print("username     password     full name\n------------------------------------")
         for row in res:
             formatted = str(row).strip('(),\'')
             formatted = formatted.replace("\'", "")
             formatted = formatted.replace(",", "        ")
-
             print(formatted)
         print("\n")
         menu()
 
     elif choice == 2:
         print("\nAdd User\n")
-        add_user()
+        username = input("Username>")
+        password = input("Password>")
+        full_name = input("Full name>")
+        add_user(username, password, full_name)
         menu()
+
     elif choice == 3:
         print("\nEdit User\n")
-        edit_user()
+        user_to_edit = input("\nUsername to edit>")
+        cursor = connection.cursor()
+        cursor.execute("select * from users where username='" + user_to_edit + "';")
+        res = cursor.fetchall()
+        if not res:
+            print("\nNo such user exists\n")
+        password = input("New password (press enter to keep current)>")
+        full_name = input("New full name (press enter to keep current)>")
+        edit_user(user_to_edit, password, full_name)
         menu()
+
     elif choice == 4:
         print("\nDelete User\n")
-        delete_user()
+        user_to_delete = input("\nEnter username to delete>")
+        answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
+        if answer is "Yes" or "Y":
+            delete_user(user_to_delete)
         menu()
+
     elif choice == 5:
         print("\nGoodbye!\n")
 
