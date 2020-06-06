@@ -100,7 +100,7 @@ def menu():
         for row in res:
             formatted = str(row).strip('(),\'')
             formatted = formatted.replace("\'", "")
-            formatted = formatted.replace(",", "")
+            formatted = formatted.replace(",", "    ")
 
             print(formatted)
         print("\n")
