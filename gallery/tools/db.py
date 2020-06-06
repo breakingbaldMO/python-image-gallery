@@ -99,11 +99,9 @@ def menu():
         print("username  password  full name\n-------------------------------")
         for row in res:
             formatted = str(row).strip('(),\'')
-            formatted = formatted.strip('\',')
-            formatted = formatted.strip('\',')
-            formatted = formatted.strip('\',')
-            formatted = formatted.strip('\',')
-            formatted = formatted.strip('\'')
+            formatted = formatted.replace("\'", "")
+            formatted = formatted.replace(",", "")
+
             print(formatted)
         print("\n")
         menu()
