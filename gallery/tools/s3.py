@@ -51,8 +51,8 @@ def get_object(bucket_name, key):
 
 
 def main():
-    # create_bucket('eli.samek.image-gallery', 'us-east-2')
-    # put_object('eli.samek.image-gallery', 'banana', 'yellow')
+    create_bucket('eli.samek.image-gallery2',)
+    put_object('eli.samek.image-gallery', 'banana', 'yellow')
     print(get_object('eli.samek.image-gallery', 'banana')['Body'].read())
 
 
