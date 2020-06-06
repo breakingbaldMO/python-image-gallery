@@ -86,7 +86,7 @@ def delete_user():
 
 
 def select_all(table):
-    res = execute('select * from ' + table)
+    res = execute('select * from ' + table).fetchall()
     return res
 
 
