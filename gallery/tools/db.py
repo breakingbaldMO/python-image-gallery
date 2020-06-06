@@ -74,6 +74,17 @@ def edit_user():
                 print("Error updating full name\n")
 
 
+def delete_user():
+    user_to_delete = input("Enter username to delete>")
+    answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
+    if answer is "Yes" or "yes" or "y" or "Y":
+        try:
+            execute("DELETE FROM users WHERE username='" + user_to_delete + "';")
+            connection.commit()
+        except Exception as error:
+            print("Error deleting username\n")
+
+
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
     choice = int(choice)
