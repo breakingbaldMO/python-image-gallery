@@ -98,7 +98,7 @@ def menu():
         res = select_all("users")
         print("username  password  full name\n-------------------------------")
         for row in res:
-            formatted = str(res).strip('()')
+            formatted = str(row).strip('()')
             print(formatted)
         print("\n")
         menu()
