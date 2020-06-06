@@ -37,10 +37,15 @@ def menu():
     if choice == 1:
         print("You entered 1\n")
         res = execute('select * from users')
-        for row in res:
-            print(row)
-        print("\n\n")
+        dblist = res.splitlines()
+        print("username    password   full name\n-------------------------------")
+        i = 2
+        while i < (len(dblist) - 1):
+            print(dblist[i])
+            i += 1
+        print("\n")
         menu()
+
     elif choice == 2:
         print("You entered 2")
         menu()
@@ -51,7 +56,7 @@ def menu():
         print("You entered 4")
         menu()
     elif choice == 5:
-        print("You entered 5")
+        print("Goodbye")
 
 
 def main():
