@@ -49,11 +49,11 @@ def add_user():
 
 def edit_user():
     cursor = connection.cursor()
-    user_to_edit = input("Username to edit>")
+    user_to_edit = input("\nUsername to edit>")
     cursor.execute("select * from users where username='" + user_to_edit + "';")
     res = cursor.fetchall()
     if not res:
-        print("No such user exists\n")
+        print("\nNo such user exists\n")
     else:
         password = input("New password (press enter to keep current)>")
         full_name = input("New full name (press enter to keep current)>")
@@ -75,7 +75,7 @@ def edit_user():
 
 
 def delete_user():
-    user_to_delete = input("Enter username to delete>")
+    user_to_delete = input("\nEnter username to delete>")
     answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
     if answer is "Yes" or "yes" or "y" or "Y":
         try:
