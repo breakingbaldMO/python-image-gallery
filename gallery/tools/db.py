@@ -51,7 +51,7 @@ def edit_user():
     if res is None:
         print("No such user exists")
     else:
-        print(user_to_edit)
+        print(res)
 
 
 def menu():
