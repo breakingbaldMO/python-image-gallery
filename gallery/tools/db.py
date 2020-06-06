@@ -36,16 +36,13 @@ def add_user():
     password = input("Password>")
     full_name = input("Full name>")
 
-    check = execute("select exists(select from users where username='" + username + "');")
-
-    if not check:
-        print("User with username " + username + " already exists")
-
-    else:
+    try:
         execute("""
         INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
         """, (username, password, full_name))
 
+    except Exception as error:
+        print("Error: a user with username '" + username + "' already exists")
 
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
