@@ -36,7 +36,7 @@ def add_user():
     password = input("Password>")
     full_name = input("Full name>")
     execute("""
-    INSERT into users (username, password, full_name) VALUES (%s, %s, %s,);
+    INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
     """, (username, password, full_name))
 
 
