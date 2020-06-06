@@ -36,7 +36,7 @@ def menu():
     choice = int(choice)
     if choice == 1:
         print("You entered 1\n")
-        res = execute('select * from users')
+        res = execute('table users')
         for row in res:
             print(row)
         print("\n")
