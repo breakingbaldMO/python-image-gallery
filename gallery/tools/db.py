@@ -51,10 +51,7 @@ def menu():
 
 def main():
     connect()
-
-
-
-
+    menu()
 
     # res = execute('select * from users')
     # for row in res:
