@@ -36,7 +36,7 @@ def add_user():
     password = input("Password>")
     full_name = input("Full name>")
 
-    check = execute("select exists(selet from users where username='" + username + "');")
+    check = execute("select exists(select from users where username='" + username + "');")
 
     if not check:
         print("User with username " + username + " already exists")
