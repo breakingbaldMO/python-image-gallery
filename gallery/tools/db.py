@@ -32,6 +32,7 @@ def execute(query, args=None):
 
 
 def add_user():
+    cursor = connection.cursor()
     username = input("Username>")
     password = input("Password>")
     full_name = input("Full name>")
@@ -40,6 +41,7 @@ def add_user():
         execute("""
         INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
         """, (username, password, full_name))
+        cursor.commit()
 
     except Exception as error:
         print("Error: a user with username '" + username + "' already exists\n")
@@ -59,12 +61,14 @@ def edit_user():
         try:
             if password:
                 execute("UPDATE users SET password='" + password + "' WHERE username='" + user_to_edit + "';")
+                cursor.commit()
 
         except Exception as error:
                 print("Error updating password\n")
         try:
             if full_name:
                 execute("UPDATE users SET full_name='" + full_name + "' WHERE username='" + user_to_edit + "';")
+                cursor.commit()
 
         except Exception as error:
                 print("Error updating full name\n")
@@ -92,9 +96,10 @@ def menu():
         menu()
     elif choice == 4:
         print("You entered 4")
+        delete_user()
         menu()
     elif choice == 5:
-        print("Goodbye")
+        print("Goodbye\n")
 
 
 def main():
