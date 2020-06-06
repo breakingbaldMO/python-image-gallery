@@ -33,13 +33,16 @@ def execute(query, args=None):
 
 def main():
     connect()
-    res = execute('select * from users')
-    for row in res:
-        print(row)
-    res = execute("update users set password=%s where username='fred'", ('banana',))
-    res = execute('select * from users')
-    for row in res:
-        print(row)
+
+    print("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command>")
+
+    # res = execute('select * from users')
+    # for row in res:
+    #    print(row)
+    # res = execute("update users set password=%s where username='fred'", ('banana',))
+    # res = execute('select * from users')
+    # for row in res:
+    #    print(row)
 
 
 if __name__ == '__main__':
