@@ -60,7 +60,7 @@ def menu():
 
 
 def main():
-    connect()
+    db.connect()
     menu()
 
     # res = execute('select * from users')
