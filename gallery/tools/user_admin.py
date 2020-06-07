@@ -1,5 +1,5 @@
 import db
-
+import psycopg2
 
 def menu():
     choice = input("1) List users\n2) Add user\n3) Edit user\n4) Delete user\n5) Quit\nEnter Command> ")
