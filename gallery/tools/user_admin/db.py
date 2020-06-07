@@ -4,7 +4,7 @@ db_host = "database-1.cv1n9oljqdta.us-east-1.rds.amazonaws.com"
 db_name = "image_gallery"
 db_user = "image_gallery"
 
-password_file = "/home/ec2-user/.image_gallery_config.txt"
+password_file = "/home/ec2-user/.image_gallery_config"
 
 connection = None
 
