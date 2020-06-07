@@ -18,6 +18,7 @@ def menu():
         username = input("Username>")
         password = input("Password>")
         full_name = input("Full name>")
+        print("\n")
         if not username:
             print("Failed to add user: username must be specified\n")
             menu()
@@ -33,6 +34,7 @@ def menu():
         res = cursor.fetchall()
         if not res:
             print("\nNo such user exists\n")
+            print("\n")
             menu()
         else:
             password = input("New password (press enter to keep current)>")
@@ -59,6 +61,7 @@ def menu():
         print("\nGoodbye!\n")
 
     else:
+        print("\n")
         menu()
 
 
