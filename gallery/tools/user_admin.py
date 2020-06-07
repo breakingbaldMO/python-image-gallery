@@ -50,13 +50,16 @@ def menu():
             print("\nNo such user exists\n")
             menu()
         else:
-            answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
+            answer = input("\nAre you sure that you want to delete " + user_to_delete + "? ")
             if answer is "Yes" or "Y":
                 db.delete_user(user_to_delete)
                 menu()
 
     elif choice == 5:
         print("\nGoodbye!\n")
+
+    else:
+        menu()
 
 
 def main():
