@@ -19,6 +19,7 @@ def get_password():
 def connect():
     global connection
     connection = psycopg2.connect(host=db_host, dbname=db_name, user=db_user, password=get_password())
+    connection.set_session(autocommit=True)
 
 
 def execute(query, args=None):
@@ -37,7 +38,7 @@ def add_user(username, password, full_name):
         execute("""
         INSERT into users (username, password, full_name) VALUES (%s, %s, %s);
         """, (username, password, full_name))
-        connection.commit()
+
 
     except Exception as error:
         print("Error: a user with username '" + username + "' already exists\n")
@@ -47,14 +48,14 @@ def edit_user(user_to_edit, password, full_name):
     try:
         if password:
                 execute("UPDATE users SET password='" + password + "' WHERE username='" + user_to_edit + "';")
-                connection.commit()
+
 
     except Exception as error:
                 print("Error updating password\n")
     try:
         if full_name:
                 execute("UPDATE users SET full_name='" + full_name + "' WHERE username='" + user_to_edit + "';")
-                connection.commit()
+
 
     except Exception as error:
                 print("Error updating full name\n")
@@ -63,7 +64,7 @@ def edit_user(user_to_edit, password, full_name):
 def delete_user(user_to_delete):
     try:
         execute("DELETE FROM users WHERE username='" + user_to_delete + "';")
-        connection.commit()
+
     except Exception as error:
             print("Error deleting username\n")
 
@@ -79,7 +80,7 @@ def menu():
     if choice == 1:
         print("\nList Users\n")
         res = select_all("users")
-        print("username                 password                full name\n---------------------------------------------------------------------")
+        print("username                   password                 full name\n---------------------------------------------------------------------")
         for row in res:
            print("{: <25} {: <25} {: <25}".format(*row))
         print("\n")
