@@ -39,6 +39,7 @@ def menu():
         else:
             password = input("New password (press enter to keep current)>")
             full_name = input("New full name (press enter to keep current)>")
+            print("\n")
             db.edit_user(user_to_edit, password, full_name)
             menu()
 
