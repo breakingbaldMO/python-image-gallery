@@ -1,4 +1,4 @@
-from gallery.tools.db import add_user, connection, edit_user, delete_user, connect, select_all
+import db
 
 
 def menu():
