@@ -81,10 +81,7 @@ def menu():
         res = select_all("users")
         print("username     password     full name\n------------------------------------")
         for row in res:
-            formatted = str(row).strip('(),\'')
-            formatted = formatted.replace("\'", "")
-            formatted = formatted.replace(",", "        ")
-            print(formatted)
+           print("{: <25} {: <25} {: <25}".format(*row))
         print("\n")
         menu()
 
