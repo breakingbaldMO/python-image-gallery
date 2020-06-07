@@ -79,7 +79,7 @@ def menu():
     if choice == 1:
         print("\nList Users\n")
         res = select_all("users")
-        print("username     password     full name\n------------------------------------")
+        print("username             password            full name\n-------------------------------------------------------")
         for row in res:
            print("{: <25} {: <25} {: <25}".format(*row))
         print("\n")
