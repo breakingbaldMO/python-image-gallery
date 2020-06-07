@@ -6,7 +6,7 @@ def menu():
     choice = int(choice)
     if choice == 1:
         print("\nList Users\n")
-        res = select_all("users")
+        res = db.select_all("users")
         print("username                  password                  full name\n---------------------------------------------------------------------")
         for row in res:
            print("{: <25} {: <25} {: <25}".format(*row))
@@ -22,13 +22,13 @@ def menu():
             print("Failed to add user: username must be specified\n")
             menu()
         else:
-            add_user(username, password, full_name)
+            db.add_user(username, password, full_name)
             menu()
 
     elif choice == 3:
         print("\nEdit User\n")
         user_to_edit = input("\nUsername to edit>")
-        cursor = connection.cursor()
+        cursor = db.connection.cursor()
         cursor.execute("select * from users where username='" + user_to_edit + "';")
         res = cursor.fetchall()
         if not res:
@@ -37,13 +37,13 @@ def menu():
         else:
             password = input("New password (press enter to keep current)>")
             full_name = input("New full name (press enter to keep current)>")
-            edit_user(user_to_edit, password, full_name)
+            db.edit_user(user_to_edit, password, full_name)
             menu()
 
     elif choice == 4:
         print("\nDelete User\n")
         user_to_delete = input("\nEnter username to delete>")
-        cursor = connection.cursor()
+        cursor = db.connection.cursor()
         cursor.execute("select * from users where username='" + user_to_delete + "';")
         res = cursor.fetchall()
         if not res:
@@ -52,7 +52,7 @@ def menu():
         else:
             answer = input("\nAre you sure that you want to delete " + user_to_delete + " ?")
             if answer is "Yes" or "Y":
-                delete_user(user_to_delete)
+                db.delete_user(user_to_delete)
                 menu()
 
     elif choice == 5:
