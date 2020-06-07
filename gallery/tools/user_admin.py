@@ -67,6 +67,7 @@ def menu():
         menu()
 
   except Exception as error:
+      print("\n")
       menu()
 
 def main():
