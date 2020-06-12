@@ -56,6 +56,9 @@ def get_secret_image_gallery():
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
-    return json.loads(secret)
+    if secret is None:
+        return 'secret is none'
+    else:
+        return json.loads(secret)
 
 
