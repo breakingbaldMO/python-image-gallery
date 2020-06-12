@@ -9,7 +9,7 @@ connection = None
 
 
 def get_secret():
-    jsonString = get_secret_image_gallery
+    jsonString = get_secret_image_gallery()
     return json.loads(jsonString)
 
 
