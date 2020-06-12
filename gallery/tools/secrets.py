@@ -27,9 +27,9 @@ def get_secret_image_gallery():
         get_secret_value_response = client.get_secret_value(
             SecretId=secret_name
         )
-        print('Success')
+
     except ClientError as e:
-        print('Error')
+
         if e.response['Error']['Code'] == 'DecryptionFailureException':
             # Secrets Manager can't decrypt the protected secret text using the provided KMS key.
             # Deal with the exception here, and/or rethrow at your discretion.
