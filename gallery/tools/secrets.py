@@ -4,6 +4,7 @@
 
 import boto3
 import base64
+import json
 from botocore.exceptions import ClientError
 
 
@@ -55,8 +56,6 @@ def get_secret_image_gallery():
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
-        if secret is None:
-            return decoded_binary_secret
-        else:
-            return secret
+    return json.loads(secret)
+
 
