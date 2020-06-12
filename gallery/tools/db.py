@@ -1,27 +1,34 @@
 import psycopg2
+import json
 from secrets import get_secret_image_gallery
 
-db_host = "database-1.cv1n9oljqdta.us-east-1.rds.amazonaws.com"
-db_name = "image_gallery"
-db_user = "image_gallery"
 
-password_file = "/home/ec2-user/.image_gallery_config"
+db_name = "image_gallery"
 
 connection = None
 
+
 def get_secret():
+    jsonString = get_secret_image_gallery
+    return json.loads(jsonString)
 
 
-def get_password():
-    f = open(password_file, "r")
-    result = f.readline()
-    f.close()
-    return result[:-1]
+def get_password(secret):
+    return secret['password']
+
+
+def get_host(secret):
+    return secret['host']
+
+
+def get_username(secret):
+    return secret['username']
 
 
 def connect():
     global connection
-    connection = psycopg2.connect(host=db_host, dbname=db_name, user=db_user, password=get_password())
+    secret = get_secret()
+    connection = psycopg2.connect(host=get_host(secret), dbname=db_name, user=get_username(secret), password=get_password(secret))
     connection.set_session(autocommit=True)
 
 
@@ -75,3 +82,13 @@ def delete_user(user_to_delete):
 def select_all(table):
     res = execute('select * from ' + table).fetchall()
     return res
+
+
+def main():
+    connect()
+    res = execute('select * from users')
+    for row in res:
+        print(row)
+
+if __name__ == '__main__':
+    main()
