@@ -7,8 +7,8 @@ import base64
 from botocore.exceptions import ClientError
 
 
-def get_secret():
-    secret_name = "sec-ig-postgres"
+def get_secret_image_gallery():
+    secret_name = "sec-image_gallery-image_gallery"
     region_name = "us-east-1"
 
     # Create a Secrets Manager client
@@ -55,5 +55,8 @@ def get_secret():
         else:
             decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
-        return secret
-    # Your code goes here.
+        if secret is None:
+            return decoded_binary_secret
+        else:
+            return secret
+
