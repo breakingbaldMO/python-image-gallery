@@ -2,8 +2,8 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import redirect, url_for
-import db
-import secrets
+from . import db
+from . import secrets
 
 
 app = Flask(__name__)

@@ -1,6 +1,6 @@
 import psycopg2
 import json
-from secrets import get_secret_image_gallery
+from . import secrets
 
 connection = None
 
@@ -13,7 +13,7 @@ def init_app(app):
 
 
 def get_secret():
-    jsonString = get_secret_image_gallery()
+    jsonString = secrets.get_secret_image_gallery()
     return json.loads(jsonString)
 
 
