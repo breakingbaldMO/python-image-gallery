@@ -9,6 +9,13 @@ from . import secrets
 app = Flask(__name__)
 
 
+@app.route('/', methods=["GET", "POST"])
+def home():
+    
+        
+    return "Welcome to the Image Gallery User Database. For database admin functions please navigate to elisamek.codes/admin"
+
+
 @app.route('/admin', methods=["GET", "POST"])
 def index():
     db.connect()
