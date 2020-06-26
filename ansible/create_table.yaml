@@ -1,0 +1,21 @@
+---
+- hosts: tag_Name_M5
+  become: true
+  user: ec2-user
+  tasks:
+    - name: Install packages
+      package:
+        name:
+          - postgresql
+          - python-psycopg2
+    - name: Configure RDS instance to create Users table
+      postgresql_table:
+        db: m5_ig_db
+        table: users
+        owner: postgres
+        columns:
+          - username text
+          - password text
+          - full_name text
+        state: present
+
