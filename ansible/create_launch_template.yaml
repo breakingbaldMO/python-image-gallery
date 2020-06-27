@@ -9,10 +9,11 @@
   tasks:
     - name: Create Launch Template
       ec2_launch_template:
-        name: "M5_lt"
-        image_id: "ami-09d95fab7fff3776c"
+        name: "M5_launch_template"
+        image_id: "{{ vpc.vpc.id }}"
         key_name: Launch
         instance_type: t3.nano
+        version: 1
         iam_instance_profile: "image-gallery-server-role"
         security_group_ids:
         network_interfaces:
@@ -20,7 +21,7 @@
            groups: ["{{ M5_postgres_tag.group_id }}","{{ M5_default_sg.group_id }}","{{ M5_developer_sg.group_id }}"]
            associate_public_ip_address: yes
            subnet_id: "{{ public_subnet.subnet.id }}"
-        user_data: "IyEvdXNyL2Jpbi9iYXNoCgoKZXhwb3J0IElNQUdFX0dBTExFUllfQk9PVFNUUkFQX1ZFUlNJT049IjEuMCIKYXdzIHMzIGNwIHMzOi8vZWR1LmF1LmNjLmt6dzAwNjguaW1hZ2UtZ2FsbGVyeS1jb25maWcvZWMyLXByb2QtbGF0ZXN0LnNoIC4vCi91c3IvYmluL2Jhc2ggZWMyLXByb2QtbGF0ZXN0LnNo"
+        user_data: "{{ lookup('file', './ec2-scripts/ec2-prod-1.1.sh') | b64encode }}"
         state: present
       register: M5_lt
     - name: Create Target Group

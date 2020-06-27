@@ -14,7 +14,7 @@
           Module: 5
         state: present
       register: vpc
-    - debug : debug
+    - name: debug
       debug: var=vpc
     - name: Create Public Subnet
       ec2_vpc_subnet:
