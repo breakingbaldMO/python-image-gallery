@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    image_id: "ami-09d95fab7fff3776c"
+  module_defaults: 
+    group/aws:
+      region: "us-east-1"
+  tasks:
+    - name: Create Launch Template
+      ec2_launch_template:
+        name: "M5_lt"
+        image_id: "ami-09d95fab7fff3776c"
+        key_name: Launch
+        instance_type: t3.nano
+        iam_instance_profile: "image-gallery-server-role"
+        security_group_ids:
+        network_interfaces:
+         - device_index: 0
+           groups: ["{{ M5_postgres_tag.group_id }}","{{ M5_default_sg.group_id }}","{{ M5_developer_sg.group_id }}"]
+           associate_public_ip_address: yes
+           subnet_id: "{{ public_subnet.subnet.id }}"
+        user_data: "IyEvdXNyL2Jpbi9iYXNoCgoKZXhwb3J0IElNQUdFX0dBTExFUllfQk9PVFNUUkFQX1ZFUlNJT049IjEuMCIKYXdzIHMzIGNwIHMzOi8vZWR1LmF1LmNjLmt6dzAwNjguaW1hZ2UtZ2FsbGVyeS1jb25maWcvZWMyLXByb2QtbGF0ZXN0LnNoIC4vCi91c3IvYmluL2Jhc2ggZWMyLXByb2QtbGF0ZXN0LnNo"
+        state: present
+    - name: Create Target Group
+      elb_target_group:
+        name: M5-target-group
+        protocol: tcp
+        port: 80
+        vpc_id: "{{ vpc.vpc.id }}"
+        state: present
+        target_type: instance
+        stickiness_enabled: no
+        stickiness_type:
+      register: M5_target_group
+    - name: Create Network Load Balancer
+      elb_network_lb:
+        name: M5-load-balancer
+        subnets:
+          - "{{ public_subnet.subnet.id }}"
+          - "{{ public_subnet2.subnet.id }}"
+        listeners:
+          - Protocol: TLS
+            Certificates:
+              - CertificateArn: "arn:aws:acm:us-east-1:035118526046:certificate/db76529f-5b54-482b-aa8c-482e9c30bea9"
+            Port: 443
+            DefaultActions:
+              - Type: forward
+                TargetGroupName: M5-target-group
+        state: present
+
+
+
