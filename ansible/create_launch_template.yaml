@@ -22,6 +22,7 @@
            subnet_id: "{{ public_subnet.subnet.id }}"
         user_data: "IyEvdXNyL2Jpbi9iYXNoCgoKZXhwb3J0IElNQUdFX0dBTExFUllfQk9PVFNUUkFQX1ZFUlNJT049IjEuMCIKYXdzIHMzIGNwIHMzOi8vZWR1LmF1LmNjLmt6dzAwNjguaW1hZ2UtZ2FsbGVyeS1jb25maWcvZWMyLXByb2QtbGF0ZXN0LnNoIC4vCi91c3IvYmluL2Jhc2ggZWMyLXByb2QtbGF0ZXN0LnNo"
         state: present
+      register: M5_lt
     - name: Create Target Group
       elb_target_group:
         name: M5-target-group
@@ -33,12 +34,20 @@
         stickiness_enabled: no
         stickiness_type:
       register: M5_target_group
+    - name: Grab EIP for NLB Subnet
+      ec2_eip_info:
+        filters:
+            tag:Name: M5-nginx-load-balancer-1
+      register: eip
+    - name: debug
+      debug: var=eip
     - name: Create Network Load Balancer
       elb_network_lb:
         name: M5-load-balancer
-        subnets:
-          - "{{ public_subnet.subnet.id }}"
-          - "{{ public_subnet2.subnet.id }}"
+        subnet_mappings:
+          - SubnetId: "{{ public_subnet.subnet.id }}"
+            AllocationId: "{{ eip.addresses[0].allocation_id }}"
+          - SubnetId: "{{ public_subnet2.subnet.id }}"
         listeners:
           - Protocol: TLS
             Certificates:
@@ -47,7 +56,21 @@
             DefaultActions:
               - Type: forward
                 TargetGroupName: M5-target-group
+        tags:
+          Name: M5-load-balancer
         state: present
+    - name: Create Auto Scaling Group
+      ec2_asg:
+        name: M5-asg
+        availability_zones: ["us-east-1b", "us-east-1d"]
+        launch_template:
+          launch_template_name: "{{ M5_lt.template.launch_template_name }}"
+          launch_template_id: "{{ M5_lt.template.launch_template_id }}"
+        min_size: 2
+        max_size: 4
+        desired_capacity: 2
+        target_group_arns: "{{ M5_target_group.target_group_arn }}"
+        vpc_zone_identifier: ["{{ public_subnet.subnet.id }}", "{{ public_subnet2.subnet.id }}"]
 
 
 

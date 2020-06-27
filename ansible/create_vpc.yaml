@@ -22,7 +22,7 @@
         region: us-east-1
         az: us-east-1a
         tags: 
-          Name: Module5 public
+          Name: M5-public-1
           Module: 5
         cidr: 10.10.0.0/24
         state: present 
@@ -33,7 +33,7 @@
         region: us-east-1
         az: us-east-1b
         tags:
-          Name: Module5 public
+          Name: M5-public-2
           Module: 5
         cidr: 10.10.3.0/24
         state: present
@@ -44,7 +44,7 @@
         region: us-east-1
         az: us-east-1a
         tags:
-          Name: Module5 private
+          Name: M5-private-1
           Module: 5
         cidr: 10.10.1.0/24
         state: present       
@@ -55,7 +55,7 @@
         region: us-east-1
         az: us-east-1b
         tags:
-          Name: Module5 private2
+          Name: M5-private-2
           Module: 5
         cidr: 10.10.2.0/24
         state: present
@@ -191,7 +191,6 @@
         region: us-east-1
         vpc_id: "{{ vpc.vpc.id }}"
         name: public-acl
-        region: us-east-1
         subnets: "{{ public_subnet.subnet.id }}"
         tags:
           Name: Module5-Public-acl
@@ -218,7 +217,6 @@
         region: us-east-1
         vpc_id: "{{ vpc.vpc.id }}"
         name: private-acl
-        region: us-east-1
         subnets: ["{{ private_subnet1.subnet.id }}", "{{ private_subnet2.subnet.id }}"]
         tags:
           Name: Module5-Private-acl
