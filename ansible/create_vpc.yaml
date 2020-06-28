@@ -240,24 +240,46 @@
           - "{{ private_subnet1.subnet.id }}"
           - "{{ private_subnet2.subnet.id }}"
       register: rds_subnet_group
-    - name: Create_ig_RDS
-      rds:
-        command: create
-        instance_name: M5-ig-db
-        db_name: M5_ig_db
-        subnet: "{{ rds_subnet_group.subnet_group.name }}"
+#   - name: Create_ig_RDS
+#        rds:
+#        instance_name: M5-ig-db
+#        db_name: M5_ig_db
+#        subnet: "{{ rds_subnet_group.subnet_group.name }}"
+#        region: us-east-1
+#        zone: us-east-1b
+#        db_engine: postgres
+#        size: 20
+#        instance_type: db.t2.micro
+#        username: postgres
+#        password: password
+#        vpc_security_groups: ["{{ M5_postgres.group_id }}", "{{ M5_default_sg.group_id }}"]
+#        tags:
+#          Module: 5
+#          Name: M5_ig_db
+#      register: M5_ig_db
+    - local_action:
+        module: rds
+        command: restore
+        snapshot: m5-snapshot
+        instance_name: M5-image-gallery-db
         region: us-east-1
         zone: us-east-1b
-        db_engine: postgres
-        size: 20
-        instance_type: db.t2.micro
-        username: postgres
-        password: password
-        vpc_security_groups: ["{{ M5_postgres.group_id }}", "{{ M5_default_sg.group_id }}"]
+        subnet: rds_subnet_group
+        publicly_accessible: yes
+        wait: yes
+        wait_timeout: 600
         tags:
-          Module: 5
           Name: M5_ig_db
-      register: M5_ig_db
+      register: rds
+    - local_action:
+        module: rds
+        command: modify
+        instance_name: M5-image-gallery-db
+        region: us-east-1
+        vpc_security_groups:
+          - "{{ M5_postgres.group_id }}"
+          - "{{ M5_default_sg.group_id }}"
+
 
 
  

@@ -1,5 +1,6 @@
 ---
-- hosts: tag_Name_M5_staging
+- hosts: bastion
+  gather_facts: yes
   become: true
   user: ec2-user
   tasks:
@@ -13,8 +14,8 @@
         name: M5_image_gallery_db
     - name: Create Image Gallery User
       postgresql_user:
-        db: m5-ig-db
-        login_host: "m5-ig-db.cv1n9oljqdta.us-east-1.rds.amazonaws.com"
+        db: M5-image-gallery-db
+        login_host: "{{ rds.instance.endpoint }}"
         login_user: postgres
         login_password: password
         name: image_gallery

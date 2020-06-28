@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Module_5
+- hosts: all
   user: ec2-user
   become: true
   vars:
