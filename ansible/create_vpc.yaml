@@ -247,7 +247,7 @@
         db_name: M5_ig_db
         subnet: "{{ rds_subnet_group.subnet_group.name }}"
         region: us-east-1
-        zone: us-east-1a
+        zone: us-east-1b
         db_engine: postgres
         size: 20
         instance_type: db.t2.micro

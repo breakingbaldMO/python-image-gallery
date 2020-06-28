@@ -1,25 +1,24 @@
 ---
 - hosts: localhost
   gather_facts: no
-  vars:
-    ami_id: "ami-09d95fab7fff3776c"
   module_defaults: 
     group/aws:
       region: "us-east-1"
+      zone: "us-east-1b"
   tasks:
-    - name: Provision Bob's EC2 instance
+    - name: Provision Staging EC2 Instance
       ec2:
         key_name: Launch
-        group: Module5-developer-sg
         instance_type: t3.nano
-        image: "{{ ami_id }}"
-        instance_tags:
-          Name: M5_buffer
-          Module: 5
+        instance_profile_name: "image-gallery-server-role"
         wait: yes
+        image: "ami-09d95fab7fff3776c"
+        instance_tags:
+          Name: M5_staging
         exact_count: 1
         count_tag:
-            Name: M5_buffer
-        vpc_subnet_id: "{{ public_subnet.subnet.id }}"
+          Name: M5_staging
+        vpc_subnet_id: "{{ public_subnet2.subnet.id }}"
         group_id: ["{{ M5_postgres_tag.group_id }}","{{ M5_default_sg.group_id }}","{{ M5_developer_sg.group_id }}"]
         assign_public_ip: yes
+      register: ec2_staging

@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Name_M5
+- hosts: tag_Name_M5_staging
   become: true
   user: ec2-user
   tasks:
@@ -8,14 +8,16 @@
         name:
           - postgresql
           - python-psycopg2
-    - name: Configure RDS instance to create Users table
-      postgresql_table:
-        db: m5_ig_db
-        table: users
-        owner: postgres
-        columns:
-          - username text
-          - password text
-          - full_name text
-        state: present
+    - name: Create Image Gallery DB
+      postgresql_db:
+        name: M5_image_gallery_db
+    - name: Create Image Gallery User
+      postgresql_user:
+        db: m5-ig-db
+        login_host: "m5-ig-db.cv1n9oljqdta.us-east-1.rds.amazonaws.com"
+        login_user: postgres
+        login_password: password
+        name: image_gallery
+        password: password
+        priv: ALL
 
