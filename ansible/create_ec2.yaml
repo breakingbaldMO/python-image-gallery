@@ -23,4 +23,3 @@
         vpc_subnet_id: "{{ public_subnet.subnet.id }}"
         group_id: ["{{ M5_postgres_tag.group_id }}","{{ M5_default_sg.group_id }}","{{ M5_developer_sg.group_id }}"]
         assign_public_ip: yes
-        user_data: "{{ lookup('file', './ec2-scripts/ec2-prod-1.1.sh') | b64encode }}"
