@@ -1,5 +1,0 @@
----
-- import_playbook: create_vpc.yaml
-#- import_playbook: create_launch_template.yaml
-- import_playbook: create_ec2.yaml
-- import_playbook: create_table.yaml
