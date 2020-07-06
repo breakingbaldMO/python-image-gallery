@@ -1,6 +1,7 @@
 import psycopg2
 import json
 from . import secrets
+from . import db
 
 connection = None
 
@@ -11,32 +12,9 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
-
-def get_secret():
-    jsonString = secrets.get_secret_image_gallery()
-    return json.loads(jsonString)
-
-
-def get_password(secret):
-    return secret['password']
-
-
-def get_host(secret):
-    return secret['host']
-
-
-def get_username(secret):
-    return secret['username']
-
-
-def get_dbname(secret):
-    return secret['database_name']
-
-
 def connect():
     global connection
-    secret = get_secret()
-    connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
+    connection = psycopg2.connect(host="database-3.cv1n9oljqdta.us-east-1.rds.amazonaws.com", dbname="postgres", user="postgres", password="password")
     connection.set_session(autocommit=True)
 
 
@@ -92,14 +70,29 @@ def select_all(table):
     res = execute('select * from ' + table).fetchall()
     return res
 
+
 def select_password(username):
-    res = execute("select password from users where username='" + username + "\'").fetchall()
-    return res
+    res = execute("select password from users where username='" + username + "\'").fetchone()
+    user = []
+    for row in res:
+        user[0] = row
+    return user
 
 
 def select_user_info(username, table):
     res = execute("select * from " + table + " where username='" + username + "';").fetchall()
     return res
+
+
+def select_user_info_string(username, table):
+    cursor = execute("select * from " + table + " where username='" + username + "';").fetchall()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    else:
+        res = [row[0], row[1], row[2]]
+        return res
+
 
 def select_all_usernames(table):
     res = execute('select username from ' + table).fetchall()
