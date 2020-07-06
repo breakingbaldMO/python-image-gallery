@@ -29,6 +29,7 @@ def execute(query, args=None):
 
 
 def add_user(username, password, full_name):
+    connect()
     cursor = connection.cursor()
     username = username.strip()
     try:
@@ -39,6 +40,17 @@ def add_user(username, password, full_name):
 
     except Exception as error:
         print("Error: a user with username '" + username + "' already exists\n")
+
+def add_image(username, key):
+    connect()
+    cursor = connection.cursor()
+    
+    # try:
+    execute("""
+        INSERT into images (username, key) VALUES (%s, %s);
+        """, (username, key))
+    #except Exception as error:
+     #   print("Error: an image with key '" + key + "' already exists\n")
 
 
 def edit_user(user_to_edit, password, full_name):

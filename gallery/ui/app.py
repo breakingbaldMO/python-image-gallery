@@ -25,17 +25,20 @@ def home():
        return redirect('/login')
     return render_template("main.html")
 
+@app.route('/upload', methods=["POST", "GET"])
+def upload():    
+      return render_template('upload.html')
 
-
-@app.route('/invalidLogin')
-def invalidLogin():
-    return "Invalid login"
-
-
-@app.route('/validLogin')
-def validLogin():
-    return "Valid login"
-
+@app.route('/uploadImage', methods=["POST", "GET"])
+def uploadImage():
+    if request.method =="POST":
+        f = request.files['file']
+        user = session.get('username')
+        filename = {f.filename}
+        key = user + "-" + str({f.filename})
+        s3.put_object("eli.samek.image-gallery", key, f)
+        db.add_image(user, key)
+        return render_template('main.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
