@@ -2,7 +2,7 @@ import psycopg2
 import json
 import secrets
 import db
-
+import s3
 connection = None
 
 def close():
@@ -107,6 +107,11 @@ def select_user_info_string(username, table):
 
 def select_all_usernames(table):
     res = execute('select username from ' + table).fetchall()
+    return res
+
+def select_all_images(username):
+    db.connect()
+    res = execute('select key from images' + " WHERE username = '" + username + "\';").fetchall()
     return res
 
 

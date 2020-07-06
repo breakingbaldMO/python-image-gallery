@@ -5,7 +5,7 @@ from flask import redirect, url_for, session
 import s3
 import db
 import secrets
-
+import base64
 app = Flask(__name__)
 
 app.secret_key = b'gdfgdrggfg1453'
@@ -28,6 +28,18 @@ def home():
 @app.route('/upload', methods=["POST", "GET"])
 def upload():    
       return render_template('upload.html')
+
+@app.route('/gallery', methods=["POST", "GET"])
+def gallery():
+    images = []
+    user = session.get('username') 
+    image_names = db.select_all_images(user)
+    for name in image_names:
+        image_data = s3.get_object("eli.samek.image-gallery", name[0])["Body"].read()
+        image = base64.b64encode(image_data).decode("utf-8")
+        images.append(image)
+    return render_template('gallery.html', images=images)
+ 
 
 @app.route('/uploadImage', methods=["POST", "GET"])
 def uploadImage():
