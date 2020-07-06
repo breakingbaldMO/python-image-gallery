@@ -1,7 +1,7 @@
 import psycopg2
 import json
-from . import secrets
-from . import db
+import secrets
+import db
 
 connection = None
 
@@ -73,11 +73,10 @@ def select_all(table):
 
 def select_password(username):
     res = execute("select password from users where username='" + username + "\'").fetchone()
-    user = []
-    for row in res:
-        user[0] = row
-    return user
-
+    if res:
+   	 for row in res:
+       	     password = row
+   	 return password
 
 def select_user_info(username, table):
     res = execute("select * from " + table + " where username='" + username + "';").fetchall()

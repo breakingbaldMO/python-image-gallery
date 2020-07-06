@@ -2,11 +2,12 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import redirect, url_for, session
+import s3
 import db
 import secrets
 
 app = Flask(__name__)
-# app.secret_key = b'gdfgdrggfg1453'
+
 app.secret_key = b'gdfgdrggfg1453'
 
 
@@ -18,19 +19,12 @@ def current_user():
     return 'username' in session
 
 
-def requires_admin(view):
-    @wraps(view)
-    def decorated(**kwargs):
-        if not check_admin():
-            return redirect('/login')
-        return view(**kwargs)
-
-    return decorated
-
-
 @app.route('/', methods=["GET", "POST"])
 def home():
-    return redirect('/login')
+    if not current_user():
+       return redirect('/login')
+    return render_template("main.html")
+
 
 
 @app.route('/invalidLogin')
@@ -55,7 +49,7 @@ def login():
 
         else:
             session['username'] = request.form["username"]
-            return redirect('/validLogin')
+            return redirect('/')
     else:
         db.close()
         return render_template('login.html')
@@ -77,21 +71,25 @@ def inc():
     return "<h1>" + str(session['value'] + "</h1>")
 
 
-@requires_admin
-@app.route('/admin', methods=["GET", "POST"])
+@app.route('/admin/users', methods=["GET", "POST"])
 def index():
+    if not check_admin():
+        return redirect('/login')
     db.connect()
     return render_template('index.html', username=db.select_all_usernames("users"))
 
 
-@requires_admin
 @app.route('/admin/edit/<username>')
 def edit(username):
+    if not check_admin():
+        return redirect('/login')
     return render_template('edit.html', username=username)
 
 
 @app.route('/admin/edit/modify', methods=['POST'])
 def modify():
+    if not check_admin():
+        return redirect('/login')
     db.connect()
     username = request.form['username']
     password = request.form['password']
@@ -102,14 +100,17 @@ def modify():
     return render_template('modify.html', user_info=res)
 
 
-@requires_admin
 @app.route('/admin/addUser')
 def addUser():
+    if not check_admin():
+        return redirect('/login') 
     return render_template('addUser.html')
 
 
 @app.route('/admin/addUser/added', methods=['POST'])
 def added():
+    if not check_admin():
+        return redirect('/login')
     db.connect()
     username = request.form['username']
     password = request.form['password']
@@ -122,6 +123,8 @@ def added():
 
 @app.route('/admin/edit/delete', methods=['POST'])
 def delete():
+    if not check_admin():
+        return redirect('/login')
     db.connect()
     username = request.form['username']
     username = username.strip()
@@ -132,6 +135,8 @@ def delete():
 
 @app.route('/admin/delete', methods=['POST'])
 def main_delete():
+    if not check_admin():
+        return redirect('/login')
     db.connect()
     username = request.form['username']
     username = username.strip()
